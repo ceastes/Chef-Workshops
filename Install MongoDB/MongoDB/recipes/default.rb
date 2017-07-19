@@ -47,8 +47,22 @@
 
 
 # Start the real work
-# Create a /etc/yum.repos.d/mongodb.repo file to hold config information
+# Create a /etc/yum.repos.d/mongodb.repo file for the MongoDB repository config info
 cookbook_file '/etc/yum.repos.d/mongodb.repo' do
-  source 'mongodb64.repo'
+  if node["kernel"]["machine"] == "i386"
+    source 'mongodb32.repo'
+  else
+    source 'mongodb64.repo'
+  end
   action :create
+end
+
+# Install the MongoDB packages and associated tools
+package "mongodb-org" do
+  action :install
+end
+
+# Start MongoDB now and on reboot
+service "mongod" do
+  action [:start, :enable]
 end
