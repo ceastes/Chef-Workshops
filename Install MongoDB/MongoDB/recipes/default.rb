@@ -44,3 +44,11 @@
 #
 # sudo chkconfig mongod on#
 #
+
+
+# Start the real work
+# Create a /etc/yum.repos.d/mongodb.repo file to hold config information
+cookbook_file '/etc/yum.repos.d/mongodb.repo' do
+  source 'mongodb64.repo'
+  action :create
+end
