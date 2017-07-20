@@ -89,8 +89,12 @@ end
 
 #* Reload Systemd to load the Tomcat Unit file
 # sudo systemctl daemon-reload
+execute 'systemctl daemon-reload'
 # sudo systemctl start tomcat
 # sudo systemctl enable tomcat
+service 'tomcat'do
+  action [:start, :enable]
+end
 
 #* Verify that Tomcat is running by visiting the site
 # curl http://localhost:8080
