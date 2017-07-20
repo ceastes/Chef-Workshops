@@ -43,9 +43,10 @@ end
 # sudo chgrp -R tomcat conf
 execute 'chgrp -R chef /opt/tomcat/conf'
 # sudo chmod g+rwx conf
+# needed to add execute by owner mode '0574' rather than mode '0474' to /opt/tomcat/conf
 directory '/opt/tomcat/conf' do
   group 'chef'
-  mode '0474'
+  mode '0574'
 end
 # sudo chmod g+r conf/*
 execute 'chmod g+r /opt/tomcat/conf/*'
