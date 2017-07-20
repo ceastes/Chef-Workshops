@@ -81,6 +81,11 @@ end
 #[Install]
 #WantedBy=multi-user.target
 
+#chef generate template tomcat.service
+#create default directory and edit tomcat/templates/default/tomcat.service.erb with proper content
+template '/etc/systemd/system/tomcat.service' do
+  source 'tomcat.service.erb'
+end
 
 #* Reload Systemd to load the Tomcat Unit file
 # sudo systemctl daemon-reload
