@@ -10,7 +10,7 @@
 # sudo yum install java-1.7.0-openjdk-devel
 package 'java-1.7.0-openjdk-devel'
 
-#* Create the Users
+#* Create the User
 # sudo groupadd chef
 group 'chef' do
   action :create
@@ -19,19 +19,6 @@ end
 # sudo useradd -g chef chef
 user 'chef' do
   group 'chef'
-end
-
-# sudo groupadd tomcat
-group 'tomcat' do
-  action :create
-end
-
-# sudo useradd -g tomcat tomcat
-user 'tomcat' do
-  manage_home false
-  shell '/bin/nologin'
-  group 'tomcat'
-  home '/opt/tomcat'
 end
 
 #* Download the Tomcat Binary
@@ -53,11 +40,19 @@ execute 'extract_tomcat' do
 end
 
 #* Update the Permissions
-
 # sudo chgrp -R tomcat conf
+execute 'chgrp -R chef /opt/tomcat/conf'
 # sudo chmod g+rwx conf
+directory '/opt/tomcat/conf' do
+  group 'chef'
+  mode '0474'
+end
 # sudo chmod g+r conf/*
+execute 'chmod g+r /opt/tomcat/conf/*'
 # sudo chown -R tomcat webapps/ work/ temp/ logs/
+execute 'chown -R chef webapps/ work/ temp/ logs/ conf/' do
+  cwd '/opt/tomcat'
+end
 
 #* Install the Systemd Unit File
 # sudo vi /etc/systemd/system/tomcat.service
