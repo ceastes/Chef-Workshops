@@ -44,7 +44,13 @@ end
 
 # Extract the Tomcat Binary
 # sudo mkdir /opt/tomcat
+directory '/opt/tomcat' do
+  action :create
+end
 # sudo tar xvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1
+execute 'extract_tomcat' do
+  command 'tar xvf /tmp/apache-tomcat-8.0.45.tar.gz -C /opt/tomcat --strip-components=1'
+end
 
 #* Update the Permissions
 
