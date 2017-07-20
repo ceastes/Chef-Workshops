@@ -10,16 +10,37 @@
 # sudo yum install java-1.7.0-openjdk-devel
 package 'java-1.7.0-openjdk-devel'
 
-#* Create the User
-
+#* Create the Users
 # sudo groupadd chef
+group 'chef' do
+  action :create
+end
+
 # sudo useradd -g chef chef
+user 'chef' do
+  group 'chef'
+end
+
+# sudo groupadd tomcat
+group 'tomcat' do
+  action :create
+end
+
+# sudo useradd -g tomcat tomcat
+user 'tomcat' do
+  manage_home false
+  shell '/bin/nologin'
+  group 'tomcat'
+  home '/opt/tomcat'
+end
 
 #* Download the Tomcat Binary
 #> NOTE: A specific binary will be mentioned below but it will likely be out of date. You can find the binaries for Tomcat 8 here at http://mirror.sdunix.com/apache/tomcat/tomcat-8/
-
 # cd /tmp
 # wget http://mirror.sdunix.com/apache/tomcat/tomcat-8/v8.0.33/bin/apache-tomcat-8.0.33.tar.gz
+remote_file '/tmp/apache-tomcat-8.0.45.tar.gz' do
+  source 'http://httpd-mirror.frgl.pw/apache/tomcat/tomcat-8/v8.0.45/bin/apache-tomcat-8.0.45.tar.gz'
+end
 
 # Extract the Tomcat Binary
 # sudo mkdir /opt/tomcat
